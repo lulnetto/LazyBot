@@ -8,16 +8,16 @@ def realizarMatricula(student_id, student_pw, matricula_open, chairs):
     #   Instancia o webdriver do selenium para que posso fazer interações com o navegador Chrome.
     browser = webdriver.Chrome('/usr/bin/chromedriver')
 
-    #   Matricula do aluno.
+    #   Matrícula do aluno.
     student_id = student_id
     #   Senha de acesso.
     student_pw = student_pw
-    #   Horario de matricula do aluno.
+    #   Horário de matrícula do aluno.
     matricula_open = datetime.strptime(matricula_open, '%d/%m/%Y %H:%M:%S')
     #   Cadeiras que o aluno quer se matricular.
     cadeiras = chairs
 
-    #   Acessa a pagina de login ao controle academico.
+    #   Acessa a página de login ao controle acadêmico.
     browser.get('https://pre.ufcg.edu.br:8443/ControleAcademicoOnline/')
 
     #   Preencha os campos de login, senha e submete.
@@ -25,10 +25,10 @@ def realizarMatricula(student_id, student_pw, matricula_open, chairs):
     browser.find_element_by_id('senha').send_keys(student_pw)
     browser.find_elements_by_class_name('btn-primary')[0].click()
 
-    #   Acessa a pagina de horario do aluno.
+    #   Acessa a página de horário do aluno.
     browser.get('https://pre.ufcg.edu.br:8443/ControleAcademicoOnline/Controlador?command=AlunoHorarioConfirmar&ano=2020&periodo=0')
 
-    #   While que coleta a hora do servidor pela pagina de emissao do horario e compara para verificar se ja esta no horario de matricula.
+    #   While que coleta a hora do servidor pela página de emissão do horário e compara para verificar se já esta no horário de matrícula.
     while True:
         time_text = browser.find_elements_by_class_name('col-sm-3')[0].text[9:]
         time = datetime.strptime(time_text, '%d/%m/%Y %H:%M:%S')
@@ -41,10 +41,10 @@ def realizarMatricula(student_id, student_pw, matricula_open, chairs):
         sleep(0.66)
         browser.refresh()
 
-    #   Acessa a pagina de matricula.
+    #   Acessa a página de matrícula.
     browser.get('file:///home/otten/%C3%81rea%20de%20Trabalho/project/local.html')
 
-    #   Coleta todas as cadeiras disponiveis.
+    #   Coleta todas as cadeiras disponíveis.
     rows = browser.find_elements_by_tag_name('tbody')[0].find_elements_by_tag_name('tr')
 
     #   Marca o checkbox das cadeiras solicitadas.
@@ -56,7 +56,7 @@ def realizarMatricula(student_id, student_pw, matricula_open, chairs):
                 break
             else: cont += 1
 
-    #   Submete a matricula.
+    #   Submete a matrícula.
     browser.find_elements_by_class_name('btn-primary')[0].click()
 
     sleep(60)
